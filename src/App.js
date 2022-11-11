@@ -14,6 +14,9 @@ import { connect, shallowEqual, useDispatch, useSelector } from 'react-redux';
 
 import { setPokemons, getPokemonsWithDetails, setLoading } from './actions/index'
 
+//with redux toolkit
+import { fetchPokemonsWithDetails } from './slices/pokemonSlice';
+
 // function App() {
 function App() {
   // function App({ pokemons, setPokemons}) {
@@ -28,34 +31,44 @@ function App() {
   // const loading = useSelector((state) => get(state, 'loading'));
 
   // with immutable.js and combine reducers
-  const pokemons = useSelector(state => getIn(state, ['data', 'pokemons'], shallowEqual)).toJS();
-  const loading = useSelector((state) => getIn(state, ['ui', 'loading']));
+  // const pokemons = useSelector(state => getIn(state, ['data', 'pokemons'], shallowEqual)).toJS();
+  // const loading = useSelector((state) => getIn(state, ['ui', 'loading']));
+
+  // with redux toolkit
+  const pokemons = useSelector(state => state.data.pokemons, shallowEqual)
+  const loading = useSelector((state) => state.ui.loading);
+  // const loading = false;
 
   const dispatch = useDispatch()
 
+  // useEffect(() => {
+  //   const fetchPokemons = async () => {
+
+  //     dispatch(setLoading(true))
+  //     const { results } = await getPokemons();
+
+  //     // const resultsDetails = await Promise.all(
+  //     //   results.map(pokemon => getPokemonDetails(pokemon))
+  //     // );
+  //     // setPokemons(results);
+  //     // dispatch(setPokemons(results))
+  //     // dispatch(setPokemons(resultsDetails));
+
+  //     //with thunk to asyncronous actions
+  //     dispatch(getPokemonsWithDetails(results)).then(() => {
+  //       console.log('finally')
+  //       dispatch(setLoading(false))
+  //     })
+  //   }
+
+  //   fetchPokemons();
+
+  // }, []);
+
+  // with redux toolkit
   useEffect(() => {
-    const fetchPokemons = async () => {
-
-      dispatch(setLoading(true))
-      const { results } = await getPokemons();
-
-      // const resultsDetails = await Promise.all(
-      //   results.map(pokemon => getPokemonDetails(pokemon))
-      // );
-      // setPokemons(results);
-      // dispatch(setPokemons(results))
-      // dispatch(setPokemons(resultsDetails));
-
-      //with thunk to asyncronous actions
-      dispatch(getPokemonsWithDetails(results)).then(() => {
-        console.log('finally')
-        dispatch(setLoading(false))
-      })
-    }
-
-    fetchPokemons();
-
-  }, []);
+    dispatch(fetchPokemonsWithDetails())
+  }, [])
 
   return (
     <div className='App'>

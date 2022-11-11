@@ -3,7 +3,10 @@ import { Card } from 'antd'
 import Meta from 'antd/lib/card/Meta';
 import StartButton from './StartButton';
 import { useDispatch } from 'react-redux';
-import { setFavorite } from '../actions';
+// import { setFavorite } from '../actions';
+
+// with redux toolkit
+import { setFavorite } from '../slices/pokemonSlice';
 
 function PokemonCard({ pokemon }) {
 
